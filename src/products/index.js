@@ -53,7 +53,11 @@ router.post("/", async (req, res, next) => {
       error.statusCode = 500;
       next(error);
     } else {
-      let updated = await append(dataPathName, req.body, "product");
+      let updated = await append(
+        dataPathName,
+        { ...req.body, updatedAt: new Date(), createdAt: new Date() },
+        "product"
+      );
       res.send(updated);
     }
   } catch (error) {
@@ -68,6 +72,7 @@ router.put("/:id", async (req, res, next) => {
     let update = await getByIdAndUpdate(dataPathName, id, {
       ...oldObject,
       ...body,
+      updatedAt: new Date(),
     });
     res.send(update);
   } catch (error) {
